@@ -1,6 +1,6 @@
 # Project: Buzzline-04-Kersha
 
-📊 Real-Time Data Visualizations
+## Real-Time Data Visualizations
 **1️. Buzzline Message Consumer (buzzline_chart.py)**
 * Description: 
 The Buzzline Message Consumer processes incoming JSON messages and generates a bar chart that dynamically updates message count per author.
