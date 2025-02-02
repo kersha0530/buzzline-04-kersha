@@ -1,4 +1,65 @@
-# Project: Buzzline-03-Kersha
+# Project: Buzzline-04-Kersha
+
+📊 Real-Time Data Visualizations
+**1️. Buzzline Message Consumer (buzzline_chart.py)**
+* Description: 
+The Buzzline Message Consumer processes incoming JSON messages and generates a bar chart that dynamically updates message count per author.
+
+* Graph: Real-Time Buzzline Bar Chart
+* X-axis: Authors
+* Y-axis: Number of messages sent
+#### Updates dynamically as new messages arrive.
+**How to Run**
+```bash```
+
+python buzzline_chart.py
+
+### Expected Output
+The bar chart will continuously update as new messages arrive:
+
+**2️. Smart BBQ Smoker Application (smoker_chart.py)**
+* Description
+The Smart BBQ Smoker tracks real-time food temperature trends and visualizes them as a line chart. This helps in detecting temperature stalls during slow cooking.
+
+* Graph: Real-Time Smoker Temperature Line Chart
+* X-axis: Time (in seconds)
+* Y-axis: Food Temperature (°F)
+#### Updates continuously as new temperature readings are recorded.
+
+**How to Run**
+```bash```
+
+python smoker_chart.py
+
+
+### Expected Output
+The line chart will track temperature changes over time, helping detect a stall when the temperature stops rising.
+
+
+## Setup & Installation
+1️. Create a Virtual Environment
+```bash```
+
+### Windows
+py -m venv .venv
+.venv\Scripts\activate
+
+### Mac/Linux
+python3 -m venv .venv
+source .venv/bin/activate
+
+2️.  Install Dependencies
+```bash```
+
+pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt
+
+
+3️. Run the Scripts
+```bash```
+
+* python buzzline_chart.py   # Run Buzzline consumer chart
+* python smoker_chart.py     # Run Smart BBQ Smoker temperature chart
 
 ## Overview
 This repository contains scripts and resources for simulating and consuming data for a "smart smoker" application. The data is produced using Kafka and consumed from Kafka topics into CSV files. This project involves generating random smoker data and modifying consumer scripts to handle and store the data efficiently.
@@ -7,39 +68,39 @@ This repository contains scripts and resources for simulating and consuming data
 1. **smoker_temps.csv**  
    **Purpose:** This CSV file contains the base temperature data of the smoker, with timestamps and temperature readings at regular intervals.  
    **Details:**  
-   - The file includes columns for timestamp and temperature.  
-   - The data is generated as part of the project to simulate smoker temperature readings over time.
+   * The file includes columns for timestamp and temperature.  
+   * The data is generated as part of the project to simulate smoker temperature readings over time.
 
 2. **smoker_data_random.csv**  
    **Purpose:** This CSV file contains randomized data for testing purposes, simulating various scenarios of a smoker’s operation.  
    **Details:**  
-   - Columns: timestamp, temperature, sensor_status, user_temp_setting, remote_control_status, sensor_activity, status_message, temperature_status.  
+   * Columns: timestamp, temperature, sensor_status, user_temp_setting, remote_control_status, sensor_activity, status_message, temperature_status.  
    **Customizations:**  
-   - `sensor_status`: Alternates between active and inactive.  
-   - `user_temp_setting`: Randomized between 150, 160, and 170°F.  
-   - `remote_control_status`: Alternates between ON and OFF.  
-   - `sensor_activity`: Alternates between active and inactive.  
-   - `status_message`: Based on the `sensor_status`, it shows whether the sensor is active or inactive.  
-   - `temperature_status`: If the temperature is above 80°F, it shows "Warning: It's too hot!" If below 40°F, "Warning: It's too cold!" Otherwise, it indicates the temperature is within range.
+   * `sensor_status`: Alternates between active and inactive.  
+   * `user_temp_setting`: Randomized between 150, 160, and 170°F.  
+   * `remote_control_status`: Alternates between ON and OFF.  
+   * `sensor_activity`: Alternates between active and inactive.  
+   * `status_message`: Based on the `sensor_status`, it shows whether the sensor is active or inactive.  
+   * `temperature_status`: If the temperature is above 80°F, it shows "Warning: It's too hot!" If below 40°F, "Warning: It's too cold!" Otherwise, it indicates the temperature is within range.
 
 **Producer Script (csv_producer_kersha.py)**
-**Purpose:** This Python script generates messages based on the data in smoker_data_random.csv and sends them to a Kafka topic.
-**Details:**
+* Purpose: This Python script generates messages based on the data in smoker_data_random.csv and sends them to a Kafka topic.
+* Details:
 Uses the smoker_data_random.csv as input to generate and send messages with the sensor_status, temperature, and related custom fields to the Kafka topic.
 The script runs continuously, producing messages every 5 seconds (can be configured in the .env).
 **Consumer Script (csv_consumer_kersha.py)**
-**Purpose:** This Python script consumes the messages from the Kafka topic and writes them to a CSV file.
-**Details:**
+* Purpose: This Python script consumes the messages from the Kafka topic and writes them to a CSV file.
+* Details:
 Reads messages from the Kafka topic (smoker_topic) and writes the data into output.csv.
 The consumer logs the process and writes additional information (like status_message, temperature_status, etc.) to the output file.
 ### Customizations Added
 1. Randomized Data Generation
 For testing, a randomized dataset (smoker_data_random.csv) has been added. The dataset includes variables such as sensor_status, temperature, user_temp_setting, and more, to simulate the behavior of a smart smoker in various conditions.
 2. **Producer and Consumer**
-**Producer:**
+* Producer:
 Sends messages at intervals to Kafka, ensuring the simulation data is streamed to the smoker_topic.
 Added logic to handle the status of the sensor and related temperature thresholds.
-**Consumer:**
+* Consumer:
 Reads from the Kafka topic and writes the data to a CSV file (output.csv).
 The script processes the received messages, converting them into a structured CSV file that can be easily used for further analysis.
 3. **Kafka Integration**
