@@ -1,3 +1,10 @@
+"""
+csv_realtime.vis_consumer_kersha.py - Real-time bar chart for Buzzline message count by author.
+
+Author: Kersha Broussard
+Date: February 2025
+"""
+
 import os
 import csv
 import json
