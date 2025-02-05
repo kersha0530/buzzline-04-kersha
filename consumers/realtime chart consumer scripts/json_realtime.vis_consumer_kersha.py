@@ -8,13 +8,13 @@ import sys
 import pathlib
 
 # Manually set the project root directory
-PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
+PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.append(str(PROJECT_ROOT))
 
 print(f"DEBUG: Added {PROJECT_ROOT} to sys.path")  # Debugging line
 
-from utils.utils_consumer import create_kafka_consumer  # Import AFTER sys.path update
-from utils.utils_logger import logger
+from utils.utils_producer import create_kafka_producer  # For Producer
+from utils.utils_consumer import create_kafka_consumer  # For Consumer
 
 import os
 import json

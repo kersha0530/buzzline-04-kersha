@@ -7,138 +7,116 @@ Date: February 2025
 import sys
 import pathlib
 
-# Manually set the project root directory
+# Set project root correctly
 PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(PROJECT_ROOT))
 
 print(f"DEBUG: Added {PROJECT_ROOT} to sys.path")  # Debugging line
 
-from utils.utils_consumer import create_kafka_consumer  # Import AFTER sys.path update
-from utils.utils_logger import logger
+
+
+from utils.utils_producer import create_kafka_producer  # For Producer
+from utils.utils_consumer import create_kafka_consumer  # For Consumer
+
 
 import os
 import csv
 import json
 from dotenv import load_dotenv
 
-#####################################
-# Load Environment Variables
-#####################################
+import json
+import time
+import matplotlib.pyplot as plt
+from collections import defaultdict
+from dotenv import load_dotenv
+from utils.utils_consumer import create_kafka_consumer
+from utils.utils_logger import logger
+
+# Load environment variables
 load_dotenv()
 
-#####################################
-# Getter Functions for .env Variables
-#####################################
+def get_kafka_topic():
+    return os.getenv("KAFKA_TOPIC", "smoker_topic")
 
-def get_kafka_topic() -> str:
-    """Fetch Kafka topic from environment or use default."""
-    topic = os.getenv("KAFKA_TOPIC", "smoker_topic")  # Ensure this topic matches your producer's topic
-    logger.info(f"Kafka topic: {topic}")
-    return topic
+def get_kafka_consumer_group_id():
+    return os.getenv("KAFKA_CONSUMER_GROUP_ID", "default_group")
 
-def get_kafka_consumer_group_id() -> str:
-    """Fetch Kafka consumer group id from environment or use default."""
-    group_id = os.getenv("KAFKA_CONSUMER_GROUP_ID", "default_group")
-    logger.info(f"Kafka consumer group id: {group_id}")
-    return group_id
+# Store temperature data
+temperature_data = []
 
-def get_output_csv_file() -> str:
-    """Fetch the CSV output file name from the environment or use default."""
-    file_name = os.getenv("CSV_OUTPUT_FILE", "output.csv")
-    logger.info(f"CSV Output file: {file_name}")
-    return file_name
-
-#####################################
-# Function to process a JSON message and convert to CSV
-#####################################
-
-def process_message(message: str, csv_writer: csv.writer, csv_file) -> None:
-    """
-    Process a JSON message and write the relevant fields to the CSV file.
-
-    Args:
-        message (str): JSON message received from Kafka.
-        csv_writer (csv.writer): CSV writer object.
-        csv_file (file): The CSV file to which the data is written.
-    """
+def process_message(message: str):
+    """Process a single JSON message from Kafka and update the chart."""
     try:
-        # Log the raw message for debugging
-        logger.debug(f"Raw message: {message}")
-
-        # Convert the message (JSON string) into a dictionary
         data = json.loads(message)
+        timestamp = data.get("timestamp", "Unknown Time")
+        temperature = float(data.get("temperature", 0))  # Ensure it's a number
 
-        # Extract relevant fields from the message
-        timestamp = data.get("timestamp")
-        temperature = data.get("temperature")
-        sensor_status = data.get("sensor_status", "N/A")
-        user_temp_setting = data.get("user_temp_setting", "N/A")
-        remote_control_status = data.get("remote_control_status", "N/A")
-        sensor_activity = data.get("sensor_activity", "N/A")
-        status_message = data.get("status_message", "N/A")
-        temperature_status = data.get("temperature_status", "N/A")
+        # Store the latest data for visualization
+        timestamps.append(timestamp)
+        temperature_values.append(temperature)
 
-        logger.info(f"Processed message: {data}")
+        if temperature is not None:
+            temperature_data.append(temperature)
+            print(f"DEBUG: Updated temperature data - {temperature_data}")  # Debug print
 
-        # Write the data to the CSV file
-        csv_writer.writerow([timestamp, temperature, sensor_status, user_temp_setting, remote_control_status, sensor_activity, status_message, temperature_status])
-        logger.info(f"Written to CSV: {data}")
-
+    except json.JSONDecodeError:
+        print(f"ERROR: Invalid JSON message: {message}")
     except Exception as e:
-        logger.error(f"Error processing message '{message}': {e}")
+        print(f"ERROR processing message: {e}")
 
-#####################################
-# Main Function for this module
-#####################################
 
-def main() -> None:
-    """
-    Main entry point for the consumer.
-    
-    - Reads the Kafka topic name and consumer group ID from environment variables.
-    - Creates a Kafka consumer using the `create_kafka_consumer` utility.
-    - Polls and processes messages from the Kafka topic.
-    """
-    logger.info("START consumer.")
+    except json.JSONDecodeError:
+        logger.error(f"Invalid JSON message: {message}")
+    except Exception as e:
+        logger.error(f"Error processing message: {e}")
 
-    # Fetch .env content
+
+import matplotlib.pyplot as plt
+import time
+from collections import deque
+
+# Store recent temperature values
+temperature_values = deque(maxlen=20)  # Keep the last 20 readings
+timestamps = deque(maxlen=20)  # Store corresponding timestamps
+
+def update_chart():
+    """Continuously update the real-time temperature plot."""
+    plt.ion()  # Enable interactive mode
+    fig, ax = plt.subplots()
+
+    while True:
+        ax.clear()
+        ax.plot(timestamps, temperature_values, marker='o', linestyle='-', color='blue')
+        ax.set_title("Real-Time Smoker Temperature Data")
+        ax.set_xlabel("Timestamp")
+        ax.set_ylabel("Temperature (°F)")
+        plt.xticks(rotation=45)
+        plt.pause(1)  # Update every second
+
+
+
+def main():
+    """Main function to consume messages and update visualization."""
     topic = get_kafka_topic()
     group_id = get_kafka_consumer_group_id()
-    output_file = get_output_csv_file()
+    consumer = create_kafka_consumer(topic, group_id)
+    
+    # Start visualization in a separate thread
+    import threading
+    chart_thread = threading.Thread(target=update_chart, daemon=True)
+    chart_thread.start()
 
-    logger.info(f"Consumer: Topic '{topic}' and group '{group_id}'...")
-    logger.info(f"CSV output file: {output_file}")
-
-    # Open the CSV file in write mode and create a CSV writer object
-    with open(output_file, mode="a", newline="") as file:
-        csv_writer = csv.writer(file)
-        # Write CSV header if it's a new file
-        file.seek(0, os.SEEK_END)  # Go to the end of the file
-        if file.tell() == 0:  # Check if the file is empty
-            csv_writer.writerow(['timestamp', 'temperature', 'sensor_status', 'user_temp_setting', 'remote_control_status', 'sensor_activity', 'status_message', 'temperature_status'])  # CSV header
-
-        # Create the Kafka consumer
-        consumer = create_kafka_consumer(topic, group_id)
-
-        logger.info(f"Polling messages from topic '{topic}'...")
-
-        try:
-            for message in consumer:
-                message_str = message.value.decode('utf-8')  # Ensure message is decoded from bytes
-                logger.debug(f"Received message at offset {message.offset}: {message_str}")
-                process_message(message_str, csv_writer, file)
-        except KeyboardInterrupt:
-            logger.warning("Consumer interrupted by user.")
-        except Exception as e:
-            logger.error(f"Error while consuming messages: {e}")
-        finally:
-            consumer.close()
-            logger.info(f"Kafka consumer for topic '{topic}' closed.")
-
-#####################################
-# Conditional Execution
-#####################################
+    logger.info(f"Consuming messages from Kafka topic '{topic}'...")
+    try:
+        for message in consumer:
+            process_message(message.value)
+    except KeyboardInterrupt:
+        logger.warning("Consumer interrupted by user.")
+    except Exception as e:
+        logger.error(f"Error while consuming messages: {e}")
+    finally:
+        consumer.close()
+        logger.info("Kafka consumer closed.")
 
 if __name__ == "__main__":
     main()
-
