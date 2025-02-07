@@ -1,7 +1,7 @@
 """
 kersha_json_live_producer.py
 
-Stream JSON data to a file and - if available - a Kafka topic.
+Stream JSON data to a file and a Kafka topic.
 
 Example JSON message:
 {
@@ -19,13 +19,24 @@ Example JSON message:
 # Import Modules
 #####################################
 
+import sys
+import pathlib
 import json
 import os
 import random
 import time
-import pathlib
 from datetime import datetime
 from dotenv import load_dotenv
+
+# Dynamically add project root to sys.path
+PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
+
+print(f"DEBUG: Added {PROJECT_ROOT} to sys.path")  # Debugging line
+
+# Import utils
+from utils.utils_logger import logger
 
 # Import Kafka only if available
 try:
@@ -33,9 +44,6 @@ try:
     KAFKA_AVAILABLE = True
 except ImportError:
     KAFKA_AVAILABLE = False
-
-# Import logging utility
-from utils.utils_logger import logger
 
 #####################################
 # Load Environment Variables
@@ -63,10 +71,7 @@ KEYWORD_CATEGORIES = {
 
 
 def assess_sentiment(text: str) -> float:
-    """
-    Stub for sentiment analysis.
-    Returns a random float between 0 and 1 for now.
-    """
+    """Stub for sentiment analysis - returns a random value."""
     return round(random.uniform(0, 1), 2)
 
 
@@ -76,14 +81,17 @@ def assess_sentiment(text: str) -> float:
 
 
 def get_message_interval() -> int:
+    """Fetch message interval from .env or use default."""
     return int(os.getenv("PROJECT_INTERVAL_SECONDS", 1))
 
 
 def get_kafka_topic() -> str:
-    return os.getenv("PROJECT_TOPIC", "kersha-topic")
+    """Fetch Kafka topic from .env or use default."""
+    return os.getenv("BUZZ_TOPIC", "buzz_json")
 
 
 def get_kafka_server() -> str:
+    """Fetch Kafka server from .env or use default."""
     return os.getenv("KAFKA_SERVER", "localhost:9092")
 
 
@@ -91,9 +99,7 @@ def get_kafka_server() -> str:
 # Set up Paths
 #####################################
 
-PROJECT_ROOT = pathlib.Path(__file__).parent.parent
-DATA_FOLDER = PROJECT_ROOT.joinpath("data")
-DATA_FILE = DATA_FOLDER.joinpath("kersha_project_live.json")
+DATA_FILE = pathlib.Path(__file__).parent.joinpath("buzz.json")
 
 #####################################
 # Define Message Generator
@@ -102,7 +108,7 @@ DATA_FILE = DATA_FOLDER.joinpath("kersha_project_live.json")
 
 def generate_messages():
     """
-    Generate a stream of JSON messages.
+    Generate a stream of JSON messages with different authors.
     """
     ADJECTIVES = ["amazing", "funny", "boring", "exciting", "weird"]
     ACTIONS = ["found", "saw", "tried", "shared", "loved"]
@@ -118,7 +124,7 @@ def generate_messages():
         "travel",
         "game",
     ]
-    AUTHORS = ["Alice", "Bob", "Charlie", "Eve", "Kersha"]  
+    AUTHORS = ["Alice", "Bob", "Charlie", "Eve", "Kersha"]  # Different authors
 
     while True:
         adjective = random.choice(ADJECTIVES)
@@ -157,6 +163,7 @@ def generate_messages():
 
 
 def main():
+    """Start the producer and send messages to Kafka and a file."""
     logger.info("START producer...")
     interval_secs = get_message_interval()
     topic = get_kafka_topic()
@@ -177,10 +184,10 @@ def main():
 
     try:
         for message in generate_messages():
-            logger.info(message)
+            logger.info(f"Generated message: {message}")
 
-            # Write to file
-            with DATA_FILE.open("a") as f:
+            # Write to local JSON file
+            with open(DATA_FILE, "a") as f:
                 f.write(json.dumps(message) + "\n")
 
             # Send to Kafka if available
@@ -206,3 +213,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

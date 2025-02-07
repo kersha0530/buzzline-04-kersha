@@ -7,11 +7,21 @@ Stream numeric temperature data to a Kafka topic.
 #####################################
 # Import Modules
 #####################################
+import sys
+import pathlib
+
+# Dynamically add the project root to sys.path
+PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))  # Ensure project root is in Python path
+
+print(f"DEBUG: Added {PROJECT_ROOT} to sys.path")  # Debugging line
+
+# Now import utils
+from utils.utils_logger import logger
 
 import os
-import sys
 import time
-import pathlib
 import csv
 import json
 from datetime import datetime
@@ -31,13 +41,13 @@ load_dotenv()
 
 def get_kafka_topic() -> str:
     """Fetch Kafka topic from environment or use default."""
-    topic = os.getenv("SMOKER_TOPIC", "smoker_topic")
+    topic = os.getenv("SMOKER_TOPIC", "smoker_csv")  # Default topic
     logger.info(f"Kafka topic: {topic}")
     return topic
 
 def get_message_interval() -> int:
     """Fetch message interval from environment or use default."""
-    interval = int(os.getenv("SMOKER_INTERVAL_SECONDS", 1))
+    interval = int(os.getenv("SMOKER_INTERVAL_SECONDS", 5))  # Default 5 seconds
     logger.info(f"Message interval: {interval} seconds")
     return interval
 
@@ -95,13 +105,13 @@ def main():
         logger.error("Failed to create Kafka producer. Exiting...")
         sys.exit(3)
     
-    create_kafka_topic(topic)
+    create_kafka_topic(topic)  # Ensures topic is created before sending messages
     
     try:
         for csv_message in generate_messages(DATA_FILE):
             producer.send(topic, value=csv_message)
             logger.info(f"Sent message to topic '{topic}': {csv_message}")
-            time.sleep(interval_secs)
+            time.sleep(interval_secs)  # Wait before sending next message
     except KeyboardInterrupt:
         logger.warning("Producer interrupted by user.")
     finally:
@@ -110,3 +120,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
