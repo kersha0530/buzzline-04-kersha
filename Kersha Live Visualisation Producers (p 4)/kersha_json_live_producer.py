@@ -1,5 +1,5 @@
 """
-kersha_project_live_json_producer.py
+kersha_json_live_producer.py
 
 Stream JSON data to a file and - if available - a Kafka topic.
 

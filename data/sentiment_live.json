@@ -1,0 +1,32 @@
+[
+    {
+        "timestamp": "2025-02-06T14:00:00Z",
+        "message": "I love coding!",
+        "author": "Kersha",
+        "sentiment": 0.8
+    },
+    {
+        "timestamp": "2025-02-06T14:05:00Z",
+        "message": "Python makes data fun!",
+        "author": "Kersha",
+        "sentiment": 0.6
+    },
+    {
+        "timestamp": "2025-02-06T14:10:00Z",
+        "message": "Kafka is frustrating sometimes.",
+        "author": "Charlie",
+        "sentiment": -0.5
+    },
+    {
+        "timestamp": "2025-02-06T14:15:00Z",
+        "message": "Machine learning is exciting!",
+        "author": "Alice",
+        "sentiment": 0.9
+    },
+    {
+        "timestamp": "2025-02-06T14:20:00Z",
+        "message": "I just saw a cool visualization!",
+        "author": "Bob",
+        "sentiment": 0.4
+    }
+]

@@ -1,5 +1,5 @@
 """
-kersha_project_live_json_consumer.py
+kersha_json_live_consumer.py
 
 Consume JSON messages from a Kafka topic and visualize author counts in real-time.
 

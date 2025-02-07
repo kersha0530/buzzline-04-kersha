@@ -12,11 +12,22 @@ Example JSON message:
 #####################################
 
 # Import packages from Python Standard Library
+import sys
+import pathlib
+
+# Set the project root path dynamically
+PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.append(str(PROJECT_ROOT))
+
+print(f"DEBUG: Added {PROJECT_ROOT} to sys.path")  # Debugging line
+
+# Now import utils
+from utils.utils_logger import logger
+
+
 import json
 import os  # For file operations
-import sys  # To exit early
 import time
-import pathlib
 from collections import defaultdict  # Data structure for counting author occurrences
 
 # IMPORTANT

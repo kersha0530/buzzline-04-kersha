@@ -2,12 +2,21 @@
 kersha_basic_json(no kafka)live_producer.py
 
 """
+import sys
+import pathlib
+
+# Dynamically add the project root to sys.path
+PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.append(str(PROJECT_ROOT))
+
+print(f"DEBUG: Added {PROJECT_ROOT} to sys.path")  # Debugging line
+
+from utils.utils_logger import logger
+
 
 import json
 import os
-import sys
 import time
-import pathlib
 from collections import defaultdict
 import matplotlib.pyplot as plt
 from utils.utils_logger import logger
