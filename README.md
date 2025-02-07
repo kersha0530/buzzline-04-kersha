@@ -3,10 +3,10 @@
 ## Project Overview
 This repository contains real-time visualization scripts for consuming and producing messages. The scripts are structured into two primary folders:
 
-1. Kersha Live Visualisation Producers (p 4)
+1. Kersha Live Visualization Producers (p 4)
 - Producer scripts that generate and send messages.
 
-2. Kersha Live Visualisation Consumers (p 4)
+2. Kersha Live Visualization Consumers (p 4)
 - Consumer scripts that read and visualize messages in real time.
 
 ### Each folder contains four producer/consumer pairs:
@@ -32,21 +32,21 @@ pip install -r requirements.txt
 
 ```bash```
 
-python "Kersha Live Visualisation Producers (p 4)/kersha_basic_json_live_producer.py"
+python "Kersha Live Visualization Producers (p 4)/kersha_basic_json_live_producer.py"
 
 #### CSV Producer
 - Streams temperature sensor data from a CSV file.
 
 ```bash```
 
-python "Kersha Live Visualisation Producers (p 4)/kersha_csv_live_producer.py"
+python "Kersha Live Visualization Producers (p 4)/kersha_csv_live_producer.py"
 
 #### Project JSON Producer
 - Sends structured JSON messages with metadata.
 
 ```bash```
 
-python "Kersha Live Visualisation Producers (p 4)/kersha_json_live_producer.py"
+python "Kersha Live Visualization Producers (p 4)/kersha_json_live_producer.py"
 
 
 #### Sentiment Analysis Producer
@@ -54,7 +54,7 @@ python "Kersha Live Visualisation Producers (p 4)/kersha_json_live_producer.py"
 
 ```bash```
 
-python "Kersha Live Visualisation Producers (p 4)/project_producer_kersha.py"
+python "Kersha Live Visualization Producers (p 4)/project_producer_kersha.py"
 - Each script writes messages to a file or streams data.
 
 ### 3️.  Running Consumers
@@ -65,28 +65,28 @@ Consumer scripts read messages and visualize them live.
 
 ```bash```
 
-python "Kersha Live Visualisation Consumers (p 4)/kersha_basic_json_live_consumer.py"
+python "Kersha Live Visualization Consumers (p 4)/kersha_basic_json_live_consumer.py"
 
 #### CSV Consumer (Reads from Kafka)
 - Reads temperature sensor data and visualizes trends.
 
 ```bash```
 
-python "Kersha Live Visualisation Consumers (p 4)/kersha_csv_live_consumer.py"
+python "Kersha Live Visualization Consumers (p 4)/kersha_csv_live_consumer.py"
 
  #### Project JSON Consumer (Reads from Kafka)
 - Reads structured JSON messages and visualizes trends.
 
 ```bash```
 
-python "Kersha Live Visualisation Consumers (p 4)/kersha_json_live_consumer.py"
+python "Kersha Live Visualization Consumers (p 4)/kersha_json_live_consumer.py"
 
 #### Sentiment Analysis Consumer
 - Reads sentiment values and displays a real-time trend chart.
 
 ```bash```
 
-python "Kersha Live Visualisation Consumers (p 4)/project_consumer_kersha.py"
+python "Kersha Live Visualization Consumers (p 4)/project_consumer_kersha.py"
 - Each consumer opens a live Matplotlib plot that updates dynamically.
 
 ### Script Descriptions
