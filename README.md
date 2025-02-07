@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 ```bash```
 
-python "Kersha Live Visualisation Producers (p 4)/kersha_basic_json(no kafka)live_producer.py"
+python "Kersha Live Visualisation Producers (p 4)/kersha_basic_json_live_producer.py"
 
 #### CSV Producer
 - Streams temperature sensor data from a CSV file.
@@ -65,7 +65,7 @@ Consumer scripts read messages and visualize them live.
 
 ```bash```
 
-python "Kersha Live Visualisation Consumers (p 4)/kersha_basic_json(no kafka)live_consumer.py"
+python "Kersha Live Visualisation Consumers (p 4)/kersha_basic_json_live_consumer.py"
 
 #### CSV Consumer (Reads from Kafka)
 - Reads temperature sensor data and visualizes trends.
@@ -92,13 +92,13 @@ python "Kersha Live Visualisation Consumers (p 4)/project_consumer_kersha.py"
 ### Script Descriptions
 #### Producer Scripts
 ##### Name/ Description
-- kersha_basic_json(no kafka)live_producer.py	Writes simple JSON messages to a file.
+- kersha_basic_json_live_producer.py	Writes simple JSON messages to a file.
 - kersha_csv_live_producer.py	Reads temperature sensor data from a CSV file and sends it to Kafka.
 - kersha_json_live_producer.py	Streams structured JSON messages 
 - project_producer_kersha.py	Generates and writes sentiment scores for Buzzline messages.
 #### Consumer Scripts
 ##### Name/ Description
-- kersha_basic_json(no kafka)live_consumer.py	Reads JSON messages from a file and visualizes message counts.
+- kersha_basic_json_live_consumer.py	Reads JSON messages from a file and visualizes message counts.
 - kersha_csv_live_consumer.py	Reads temperature sensor data and visualizes trends.
 - kersha_json_live_consumer.py	Reads structured JSON messages and visualizes trends.
 - project_consumer_kersha.py	Reads sentiment values and displays a real-time trend chart.
