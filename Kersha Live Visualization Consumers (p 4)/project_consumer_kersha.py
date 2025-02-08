@@ -84,8 +84,8 @@ def update_chart(frame):
         plt.xticks(rotation=45)
         plt.tight_layout()
 
-# Animation loop (updates every 2 seconds)
-ani = animation.FuncAnimation(fig, update_chart, interval=2000)
+# Animation loop
+ani = animation.FuncAnimation(fig, update_chart, interval=2000, cache_frame_data=False)
 
 # Run visualization
 plt.show()
