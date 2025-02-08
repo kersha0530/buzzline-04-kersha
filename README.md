@@ -9,12 +9,19 @@ This repository contains real-time visualization scripts for consuming and produ
 2. Kersha Live Visualization Consumers (p 4)
 - Consumer scripts that read and visualize messages in real time.
 
-### Each folder contains four producer/consumer pairs:
+### Consumers folder contains 3 scripts. Producers folder contains 4 scripts:
 
 1️.  Basic JSON Producer/Consumer (No Kafka) – Writes and reads JSON messages from a file.
 2️.  CSV Producer/Consumer – Streams temperature sensor data from a CSV file.
 3️.  JSON Producer/Consumer – Sends and visualizes structured JSON messages with metadata.
 4️.  Sentiment Analysis Producer/Consumer – Streams sentiment-based JSON messages and visualizes trends.
+
+The producer for the Sentiment Analysis script is located "case_producers (p 4 examples)/project_producer_case.py"
+
+
+# Run Buzzline Producer (Generates project_live.json)
+python "case_producers (p 4 examples)/project_producer_case.py"
+
 
 ## Getting Started
 ### 1️.  Install Dependencies
@@ -46,7 +53,8 @@ python "Kersha Live Visualization Producers (p 4)/kersha_csv_live_producer.py"
 
 ```bash```
 
-python "Kersha Live Visualization Producers (p 4)/kersha_json_live_producer.py"
+##### Run Buzzline Producer (Generates project_live.json)
+python "case_producers (p 4 examples)/project_producer_case.py"
 
 
 #### Sentiment Analysis Producer
@@ -55,7 +63,7 @@ python "Kersha Live Visualization Producers (p 4)/kersha_json_live_producer.py"
 ```bash```
 
 python "Kersha Live Visualization Producers (p 4)/project_producer_kersha.py"
-- Each script writes messages to a file or streams data.
+- Each script writes messages to a file then streams data.
 
 ### 3️.  Running Consumers
 Consumer scripts read messages and visualize them live.
