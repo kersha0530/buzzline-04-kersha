@@ -54,21 +54,21 @@ python "Kersha_Live_Visualization_Consumers (p 4)/kersha_json_live_consumer.py"
 ```
 
 ### **3️. CSV Producer & CSV Consumer**
-✅ **Run the Producer:**
+ **Run the Producer:**
 ```sh
 python "Kersha_Live_Visualization_Producers (p 4)/kersha_csv_live_producer.py"
 ```
-✅ **Run the Consumer:**
+ **Run the Consumer:**
 ```sh
 python "Kersha_Live_Visualization_Consumers (p 4)/kersha_csv_live_consumer.py"
 ```
 
 ### **4️. Project-Specific Producer & Consumer**
-✅ **Run the Producer:**
+ **Run the Producer:**
 ```sh
 python "Kersha_Live_Visualization_Producers (p 4)/project_producer_case.py"
 ```
-✅ **Run the Consumer:**
+ **Run the Consumer:**
 ```sh
 python "Kersha_Live_Visualization_Consumers (p 4)/project_consumer_kersha.py"
 ```
