@@ -1,26 +1,7 @@
 # Project: Buzzline-04-Kersha
 
-## Project Overview
-This repository contains real-time visualization scripts for consuming and producing messages. The scripts are structured into two primary folders:
-
-1. Kersha Live Visualization Producers (p 4)
-- Producer scripts that generate and send messages.
-
-2. Kersha Live Visualization Consumers (p 4)
-- Consumer scripts that read and visualize messages in real time.
-
-### Consumers folder contains 3 scripts. Producers folder contains 4 scripts:
-
-1️.  Basic JSON Producer/Consumer (No Kafka) – Writes and reads JSON messages from a file.
-2️.  CSV Producer/Consumer – Streams temperature sensor data from a CSV file.
-3️.  JSON Producer/Consumer – Sends and visualizes structured JSON messages with metadata.
-4️.  Sentiment Analysis Producer/Consumer – Streams sentiment-based JSON messages and visualizes trends.
-
-The producer for the Sentiment Analysis script is located "case_producers (p 4 examples)/project_producer_case.py"
-
-
-# Run Buzzline Producer (Generates project_live.json)
-python "case_producers (p 4 examples)/project_producer_case.py"
+##  Overview
+This project includes multiple **real-time producers and consumers** for visualizing live data. Producers generate data in **JSON** and **CSV** formats, while consumers process and display the data dynamically.
 
 
 ## Getting Started
@@ -31,86 +12,85 @@ python "case_producers (p 4 examples)/project_producer_case.py"
 
 pip install -r requirements.txt
 
-### 2️.  Running Producers
-- The producer scripts generate and send messages.
+#  Kersha Live Visualization - Producers & Consumers
 
-#### Basic JSON Producer (No Kafka)
-- Writes simple messages to a file.
+##  Folder Structure
+```
+Kersha_Live_Visualization_Producers (p 4)/
+│── kersha_basic_json_live_producer.py
+│── kersha_csv_live_producer.py
+│── kersha_json_live_producer.py
+│── project_producer_case.py
+│
+Kersha_Live_Visualization_Consumers (p 4)/
+│── kersha_basic_json_live_consumer.py
+│── kersha_csv_live_consumer.py
+│── kersha_json_live_consumer.py
+│── project_consumer_kersha.py
+```
 
-```bash```
+---
+## 🔹 Running the Producers & Consumers
+Each **producer-consumer pair** should be executed separately to avoid conflicts.
 
-python "Kersha Live Visualization Producers (p 4)/kersha_basic_json_live_producer.py"
+### **1️. JSON Producer & Basic JSON Consumer**
+ **Run the Producer:**
+```sh
+python "Kersha_Live_Visualization_Producers (p 4)/kersha_basic_json_live_producer.py"
+```
+ **Run the Consumer:**
+```sh
+python "Kersha_Live_Visualization_Consumers (p 4)/kersha_basic_json_live_consumer.py"
+```
 
-#### CSV Producer
-- Streams temperature sensor data from a CSV file.
+### **2️. JSON Producer & Advanced JSON Consumer**
+ **Run the Producer:**
+```sh
+python "Kersha_Live_Visualization_Producers (p 4)/kersha_json_live_producer.py"
+```
+ **Run the Consumer:**
+```sh
+python "Kersha_Live_Visualization_Consumers (p 4)/kersha_json_live_consumer.py"
+```
 
-```bash```
+### **3️. CSV Producer & CSV Consumer**
+✅ **Run the Producer:**
+```sh
+python "Kersha_Live_Visualization_Producers (p 4)/kersha_csv_live_producer.py"
+```
+✅ **Run the Consumer:**
+```sh
+python "Kersha_Live_Visualization_Consumers (p 4)/kersha_csv_live_consumer.py"
+```
 
-python "Kersha Live Visualization Producers (p 4)/kersha_csv_live_producer.py"
+### **4️⃣ Project-Specific Producer & Consumer**
+✅ **Run the Producer:**
+```sh
+python "Kersha_Live_Visualization_Producers (p 4)/project_producer_case.py"
+```
+✅ **Run the Consumer:**
+```sh
+python "Kersha_Live_Visualization_Consumers (p 4)/project_consumer_kersha.py"
+```
 
-#### Project JSON Producer
-- Sends structured JSON messages with metadata.
+---
 
-```bash```
+1️⃣ **Activate Virtual Environment**
+```sh
+venv\Scripts\activate  # Windows
+source venv/bin/activate  # macOS/Linux
+```
 
-##### Run Buzzline Producer (Generates project_live.json)
-python "case_producers (p 4 examples)/project_producer_case.py"
+2️⃣ **Install Dependencies**
+```sh
+pip install -r requirements.txt
+```
 
-
-#### Sentiment Analysis Producer
-- Generates sentiment scores for Buzzline messages.
-
-```bash```
-
-python "Kersha Live Visualization Producers (p 4)/project_producer_kersha.py"
-- Each script writes messages to a file then streams data.
-
-### 3️.  Running Consumers
-Consumer scripts read messages and visualize them live.
-
-#### Basic JSON Consumer (No Kafka, Reads from File)
-- Reads JSON messages and visualizes author counts.
-
-```bash```
-
-python "Kersha Live Visualization Consumers (p 4)/kersha_basic_json_live_consumer.py"
-
-#### CSV Consumer (Reads from Kafka)
-- Reads temperature sensor data and visualizes trends.
-
-```bash```
-
-python "Kersha Live Visualization Consumers (p 4)/kersha_csv_live_consumer.py"
-
- #### Project JSON Consumer (Reads from Kafka)
-- Reads structured JSON messages and visualizes trends.
-
-```bash```
-
-python "Kersha Live Visualization Consumers (p 4)/kersha_json_live_consumer.py"
-
-#### Sentiment Analysis Consumer
-- Reads sentiment values and displays a real-time trend chart.
-
-```bash```
-
-python "Kersha Live Visualization Consumers (p 4)/project_consumer_kersha.py"
-- Each consumer opens a live Matplotlib plot that updates dynamically.
-
-### Script Descriptions
-#### Producer Scripts
-##### Name/ Description
-- kersha_basic_json_live_producer.py	Writes simple JSON messages to a file.
-- kersha_csv_live_producer.py	Reads temperature sensor data from a CSV file and sends it to Kafka.
-- kersha_json_live_producer.py	Streams structured JSON messages 
-- project_producer_kersha.py	Generates and writes sentiment scores for Buzzline messages.
-#### Consumer Scripts
-##### Name/ Description
-- kersha_basic_json_live_consumer.py	Reads JSON messages from a file and visualizes message counts.
-- kersha_csv_live_consumer.py	Reads temperature sensor data and visualizes trends.
-- kersha_json_live_consumer.py	Reads structured JSON messages and visualizes trends.
-- project_consumer_kersha.py	Reads sentiment values and displays a real-time trend chart.
-
+---
+## **Expected Outputs**
+- **JSON & CSV Consumers** generates **live visualizations** using Matplotlib.
+- **Project Consumer** processes and **store insights** from the real-time messages.
+- **Console logs** shows message ingestion and processing status.
 
 
 #### - Each consumer script opens a live Matplotlib visualization.
